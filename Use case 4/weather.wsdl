@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://localhost" targetNamespace="http://localhost">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost">
+            <element name="getWeatherByCityRequest">
+                <complexType>
+                    <sequence>
+                        <element name="city" type="string" />
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getWeatherByCityResponse">
+                <complexType>
+                    <sequence>
+                        <element name="city" type="string" />
+                        <element name="temperature" type="float" />
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+    <message name="getWeatherByCityInput">
+        <part name="parameters" element="tns:getWeatherByCityRequest" />
+    </message>
+    <message name="getWeatherByCityOutput">
+        <part name="parameters" element="tns:getWeatherByCityResponse" />
+    </message>
+    <portType name="WeatherPortType">
+        <operation name="getWeatherByCity">
+            <input message="tns:getWeatherByCityInput" />
+            <output message="tns:getWeatherByCityOutput" />
+        </operation>
+    </portType>
+    <binding name="WeatherBinding" type="tns:WeatherPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="getWeatherByCity">
+            <soap:operation soapAction="http://localhost#getWeatherByCity" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+    </binding>
+    <service name="WeatherService">
+        <port name="WeatherPort" binding="tns:WeatherBinding">
+            <soap:address location="http://localhost/weather2.php" />
+        </port>
+    </service>
+</definitions>
