@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://localhost/soap"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://localhost/soap">
+
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/soap">
+            <xsd:element name="getLocationByCityRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="city" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getLocationByCityResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="location" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getWeatherByCityRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="city" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getWeatherByCityResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="temperature" type="xsd:integer"/>
+                        <xsd:element name="location" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="getLocationByCityRequest">
+        <wsdl:part name="parameters" element="tns:getLocationByCityRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getLocationByCityResponse">
+        <wsdl:part name="parameters" element="tns:getLocationByCityResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getWeatherByCityRequest">
+        <wsdl:part name="parameters" element="tns:getWeatherByCityRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getWeatherByCityResponse">
+        <wsdl:part name="parameters" element="tns:getWeatherByCityResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="WeatherServicePortType">
+        <wsdl:operation name="getLocationByCity">
+            <wsdl:input message="tns:getLocationByCityRequest"/>
+            <wsdl:output message="tns:getLocationByCityResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWeatherByCity">
+            <wsdl:input message="tns:getWeatherByCityRequest"/>
+            <wsdl:output message="tns:getWeatherByCityResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="WeatherServiceBinding" type="tns:WeatherServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getLocationByCity">
+            <soap:operation soapAction="getLocationByCity"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input>
+            <wsdl:output><soap:body use="literal"/></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getWeatherByCity">
+            <soap:operation soapAction="getWeatherByCity"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input>
+            <wsdl:output><soap:body use="literal"/></wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="WeatherService">
+        <wsdl:port name="WeatherServicePort" binding="tns:WeatherServiceBinding">
+            <soap:address location="http://localhost/weather2.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
